@@ -5,24 +5,24 @@ set -e
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 platform=`uname -a | awk '{print tolower($1)}'`
 arch=`uname -m`
-url="https://github.com/RavenProject/Ravencoin/releases/download"
-version="3.3.1.0"
-tag="v3.3.1"
+url="https://github.com/B4Bcoin/b4bcoin/releases/download"
+version="2.1.5"
+tag="v2.1.5"
 
 if [[ "${platform}" == "linux" ]]; then
     if [[ "${arch}" == "x86_64" ]]; then
-        # e.g. raven-3.3.1.0-x86_64-linux-gnu.tar.gz
-        archive_name="raven-${version}-x86_64-linux-gnu.tar.gz"
+        # e.g. b4b-3.3.1.0-x86_64-linux-gnu.tar.gz
+        archive_name="b4b-${version}-x86_64-linux-gnu.tar.gz"
     elif [[ "${arch}" =~ "arm" ]]; then
-        # e.g. raven-3.3.1.0-arm-linux-gnueabihf.tar.gz
-        archive_name="raven-${version}-arm-linux-gnueabihf.tar.gz"
+        # e.g. b4b-3.3.1.0-arm-linux-gnueabihf.tar.gz
+        archive_name="b4b-${version}-arm-linux-gnueabihf.tar.gz"
     else
-        echo "Ravencoin binary distribution not found for linux architecture: ${arch}"
+        echo "B4bcoin binary distribution not found for linux architecture: ${arch}"
         exit -1
     fi
 elif [[ "${platform}" == "darwin" ]]; then
-    # e.g. raven-3.3.1.0-osx.dmg
-    archive_name="raven-3.3.1.0-osx.dmg"
+    # e.g. b4b-3.3.1.0-osx.dmg
+    archive_name="b4b-3.3.1.0-osx.dmg"
 else
     echo "Ravencoin binary distribution not found for platform and architecture (${platform}/${arch})"
     exit -1
@@ -31,16 +31,16 @@ fi
 binary_url="${url}/${tag}/${archive_name}"
 shasums_url="${url}/${tag}/${archive_name}.sha256sum"
 
-download_ravend() {
+download_b4bd() {
 
     cd "${root_dir}/bin"
 
-    if test -e "ravend"; then
-        echo "\"bin/ravend\" already exists -- skipping download."
+    if test -e "b4bd"; then
+        echo "\"bin/b4bd\" already exists -- skipping download."
         return;
     fi
 
-    echo "Downloading ravencoin: ${binary_url}"
+    echo "Downloading b4bcoin: ${binary_url}"
 
     is_curl=true
     if hash curl 2>/dev/null; then
@@ -59,17 +59,17 @@ download_ravend() {
             wget $shasums_url
         fi
         if test -e "${archive_name}"; then
-            echo "Unpacking ravencoin distribution"
+            echo "Unpacking b4bcoin distribution"
             if [[ "${platform}" == "linux" ]]; then            
                 tar -xvzf $archive_name
                 if test $? -eq 0; then
-                    ln -sf "raven-${version}/bin/ravend"
+                    ln -sf "b4b-${version}/bin/b4bd"
                     return;
                 fi
             elif [[ "${platform}" == "darwin" ]]; then
                 hdiutil mount $archive_name
                 if test $? -eq 0; then
-                    cp /Volumes/Raven\ Core/Raven-Qt.app/Contents/MacOS/ravend .
+                    cp /Volumes/Raven\ Core/Raven-Qt.app/Contents/MacOS/b4bd .
                     hdiutil unmount /Volumes/Raven\ Core
                     return;
                 fi
@@ -81,7 +81,7 @@ download_ravend() {
 }
 
 verify_download() {
-    echo "Verifying signatures of ravencoin download"
+    echo "Verifying signatures of b4bcoin download"
     gpg --verify "${root_dir}/bin/SHA256SUMS.asc"
 
     if hash shasum 2>/dev/null; then
@@ -118,10 +118,10 @@ while [ -n "$1" ]; do
   value="$2"
 
   case $param in
-    --skip-ravencoin-download)
+    --skip-b4bcoin-download)
           download=0
           ;;
-    --verify-ravencoin-download)
+    --verify-b4bcoin-download)
           verify=1
           ;;
   esac
@@ -129,7 +129,7 @@ while [ -n "$1" ]; do
 done
 
 if [ "${download}" = 1 ]; then
-    download_ravend
+    download_b4bd
 fi
 
 if [ "${verify}" = 1 ]; then

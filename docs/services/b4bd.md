@@ -1,46 +1,46 @@
-# Ravencoin Service
+# B4bcoin Service
 
-The Ravencoin Service is a Node.js interface to [Ravencoin](https://github.com/ravenproject/ravencoin) for querying information about the ravencoin block chain. It will manage starting and stopping `ravend` or connect to several running `ravend` processes. It uses a branch of a [branch of Ravencoin](https://github.com/RavenProject/Ravencoin/tree/0.15.0-ravencore/) with additional indexes for querying information about addresses and blocks. Results are cached for performance and there are several additional API methods added for common queries.
+The B4bcoin Service is a Node.js interface to [B4bcoin](https://github.com/B4Bcoin/b4bcoin) for querying information about the b4bcoin block chain. It will manage starting and stopping `b4bd` or connect to several running `b4bd` processes. It uses a branch of a [branch of B4bcoin](https://github.com/B4Bcoin/B4bcoin/tree/0.15.0-b4bcore/) with additional indexes for querying information about addresses and blocks. Results are cached for performance and there are several additional API methods added for common queries.
 
 ## Configuration
 
-The default configuration will include a "spawn" configuration in "ravend". This defines the location of the block chain database and the location of the `ravend` daemon executable. The below configuration points to a local clone of `ravencoin`, and will start `ravend` automatically with your Node.js application.
+The default configuration will include a "spawn" configuration in "b4bd". This defines the location of the block chain database and the location of the `b4bd` daemon executable. The below configuration points to a local clone of `b4bcoin`, and will start `b4bd` automatically with your Node.js application.
 
 ```json
   "servicesConfig": {
-    "ravend": {
+    "b4bd": {
       "spawn": {
-        "datadir": "/home/ravencore/.raven",
-        "exec": "/home/ravencore/ravencoin/src/ravend"
+        "datadir": "/home/b4bcore/.b4b",
+        "exec": "/home/b4bcore/b4bcoin/src/b4bd"
       }
     }
   }
 ```
 
-It's also possible to connect to separately managed `ravend` processes with round-robin quering, for example:
+It's also possible to connect to separately managed `b4bd` processes with round-robin quering, for example:
 
 ```json
   "servicesConfig": {
-    "ravend": {
+    "b4bd": {
       "connect": [
         {
           "rpchost": "127.0.0.1",
           "rpcport": 30521,
-          "rpcuser": "ravencoin",
+          "rpcuser": "b4bcoin",
           "rpcpassword": "local321",
           "zmqpubrawtx": "tcp://127.0.0.1:30611"
         },
         {
           "rpchost": "127.0.0.1",
           "rpcport": 30522,
-          "rpcuser": "ravencoin",
+          "rpcuser": "b4bcoin",
           "rpcpassword": "local321",
           "zmqpubrawtx": "tcp://127.0.0.1:30622"
         },
         {
           "rpchost": "127.0.0.1",
           "rpcport": 30523,
-          "rpcuser": "ravencoin",
+          "rpcuser": "b4bcoin",
           "rpcpassword": "local321",
           "zmqpubrawtx": "tcp://127.0.0.1:30633"
         }
@@ -56,7 +56,7 @@ It's also possible to connect to separately managed `ravend` processes with roun
 Methods are available by directly interfacing with the service:
 
 ```js
-node.services.ravend.<methodName>
+node.services.b4bd.<methodName>
 ```
 
 ### Chain
@@ -67,12 +67,12 @@ node.services.ravend.<methodName>
 // gives the block hashes sorted from low to high within a range of timestamps
 var high = 1460393372; // Mon Apr 11 2016 12:49:25 GMT-0400 (EDT)
 var low = 1460306965; // Mon Apr 10 2016 12:49:25 GMT-0400 (EDT)
-node.services.ravend.getBlockHashesByTimestamp(high, low, function(err, blockHashes) {
+node.services.b4bd.getBlockHashesByTimestamp(high, low, function(err, blockHashes) {
   //...
 });
 
 // get the current tip of the chain
-node.services.ravend.getBestBlockHash(function(err, blockHash) {
+node.services.b4bd.getBestBlockHash(function(err, blockHash) {
   //...
 })
 ```
@@ -81,17 +81,17 @@ node.services.ravend.getBestBlockHash(function(err, blockHash) {
 
 ```js
 // gives a boolean if the daemon is fully synced (not the initial block download)
-node.services.ravend.isSynced(function(err, synced) {
+node.services.b4bd.isSynced(function(err, synced) {
   //...
 })
 
 // gives the current estimate of blockchain download as a percentage
-node.services.ravend.syncPercentage(function(err, percent) {
+node.services.b4bd.syncPercentage(function(err, percent) {
   //...
 });
 
 // gives information about the chain including total number of blocks
-node.services.ravend.getInfo(function(err, info) {
+node.services.b4bd.getInfo(function(err, info) {
   //...
 });
 ```
@@ -101,7 +101,7 @@ node.services.ravend.getInfo(function(err, info) {
 ```js
 // will generate a block for the "regtest" network (development purposes)
 var numberOfBlocks = 10;
-node.services.ravend.generateBlock(numberOfBlocks, function(err, blockHashes) {
+node.services.b4bd.generateBlock(numberOfBlocks, function(err, blockHashes) {
   //...
 });
 ```
@@ -110,30 +110,30 @@ node.services.ravend.generateBlock(numberOfBlocks, function(err, blockHashes) {
 
 **Getting Block Information**
 
-It's possible to query blocks by both block hash and by height. Blocks are given as Node.js Buffers and can be parsed via Ravencore:
+It's possible to query blocks by both block hash and by height. Blocks are given as Node.js Buffers and can be parsed via B4bcore:
 
 ```js
 var blockHeight = 0;
-node.services.ravend.getRawBlock(blockHeight, function(err, blockBuffer) {
+node.services.b4bd.getRawBlock(blockHeight, function(err, blockBuffer) {
   if (err) {
     throw err;
   }
-  var block = ravencore.Block.fromBuffer(blockBuffer);
+  var block = b4bcore.Block.fromBuffer(blockBuffer);
   console.log(block);
 };
 
-// get a ravencore object of the block (as above)
-node.services.ravend.getBlock(blockHash, function(err, block) {
+// get a b4bcore object of the block (as above)
+node.services.b4bd.getBlock(blockHash, function(err, block) {
   //...
 };
 
 // get only the block header and index (including chain work, height, and previous hash)
-node.services.ravend.getBlockHeader(blockHeight, function(err, blockHeader) {
+node.services.b4bd.getBlockHeader(blockHeight, function(err, blockHeader) {
   //...
 });
 
 // get the block with a list of txids
-node.services.ravend.getBlockOverview(blockHash, function(err, blockOverview) {
+node.services.b4bd.getBlockOverview(blockHash, function(err, blockOverview) {
   //...
 };
 ```
@@ -144,20 +144,20 @@ Get a transaction asynchronously by reading it from disk:
 
 ```js
 var txid = '7426c707d0e9705bdd8158e60983e37d0f5d63529086d6672b07d9238d5aa623';
-node.services.ravend.getRawTransaction(txid, function(err, transactionBuffer) {
+node.services.b4bd.getRawTransaction(txid, function(err, transactionBuffer) {
   if (err) {
     throw err;
   }
-  var transaction = ravencore.Transaction().fromBuffer(transactionBuffer);
+  var transaction = b4bcore.Transaction().fromBuffer(transactionBuffer);
 });
 
-// get a ravencore object of the transaction (as above)
-node.services.ravend.getTransaction(txid, function(err, transaction) {
+// get a b4bcore object of the transaction (as above)
+node.services.b4bd.getTransaction(txid, function(err, transaction) {
   //...
 });
 
 // retrieve the transaction with input values, fees, spent and block info
-node.services.ravend.getDetailedTransaction(txid, function(err, transaction) {
+node.services.b4bd.getDetailedTransaction(txid, function(err, transaction) {
   //...
 });
 ```
@@ -166,11 +166,11 @@ Send a transaction to the network:
 
 ```js
 var numberOfBlocks = 3;
-node.services.ravend.estimateFee(numberOfBlocks, function(err, feesPerKilobyte) {
+node.services.b4bd.estimateFee(numberOfBlocks, function(err, feesPerKilobyte) {
   //...
 });
 
-node.services.ravend.sendTransaction(transaction.serialize(), function(err, hash) {
+node.services.b4bd.sendTransaction(transaction.serialize(), function(err, hash) {
   //...
 });
 ```
@@ -183,7 +183,7 @@ One of the most common uses will be to retrieve unspent outputs necessary to cre
 
 ```js
 var address = 'mgY65WSfEmsyYaYPQaXhmXMeBhwp4EcsQW';
-node.services.ravend.getAddressUnspentOutputs(address, options, function(err, unspentOutputs) {
+node.services.b4bd.getAddressUnspentOutputs(address, options, function(err, unspentOutputs) {
   // see below
 });
 ```
@@ -208,7 +208,7 @@ The `unspentOutputs` will have the format:
 
 ```js
 var address = 'mgY65WSfEmsyYaYPQaXhmXMeBhwp4EcsQW';
-node.services.ravend.getAddressBalance(address, options, function(err, balance) {
+node.services.b4bd.getAddressBalance(address, options, function(err, balance) {
   // balance will be in satoshis with "received" and "balance"
 });
 ```
@@ -217,7 +217,7 @@ node.services.ravend.getAddressBalance(address, options, function(err, balance) 
 
 This method will give history of an address limited by a range of block heights by using the "start" and "end" arguments. The "start" value is the more recent, and greater, block height. The "end" value is the older, and lesser, block height. This feature is most useful for synchronization as previous history can be omitted. Furthermore for large ranges of block heights, results can be paginated by using the "from" and "to" arguments.
 
-If "queryMempool" is set as true (it is true by default), it will show unconfirmed transactions from the ravencoin mempool. However, if you specify "start" and "end", "queryMempool" is ignored and is always false.
+If "queryMempool" is set as true (it is true by default), it will show unconfirmed transactions from the b4bcoin mempool. However, if you specify "start" and "end", "queryMempool" is ignored and is always false.
 
 If "queryMempoolOnly" is set as true (it is false by default), it will show *only* unconfirmed transactions from mempool.
 
@@ -228,7 +228,7 @@ var options = {
   end: 344000,
   queryMempool: true // since we presented range, queryMempool will be ignored
 };
-node.services.ravend.getAddressHistory(addresses, options, function(err, history) {
+node.services.b4bd.getAddressHistory(addresses, options, function(err, history) {
   // see below
 });
 ```
@@ -261,7 +261,7 @@ var options = {
   noTxList: false
 };
 
-node.services.ravend.getAddressSummary(address, options, function(err, summary) {
+node.services.b4bd.getAddressSummary(address, options, function(err, summary) {
   // see below
 });
 ```
@@ -290,43 +290,43 @@ The `summary` will have the format (values are in satoshis):
 
 
 ## Events
-The Ravencoin Service exposes two events via the Bus, and there are a few events that can be directly registered:
+The B4bcoin Service exposes two events via the Bus, and there are a few events that can be directly registered:
 
 ```js
-node.services.ravend.on('tip', function(blockHash) {
+node.services.b4bd.on('tip', function(blockHash) {
   // a new block tip has been added, if there is a rapid update (with a second) this will not emit every tip update
 });
 
-node.services.ravend.on('tx', function(transactionBuffer) {
+node.services.b4bd.on('tx', function(transactionBuffer) {
   // a new transaction has entered the mempool
 });
 
-node.services.ravend.on('block', function(blockHash) {
+node.services.b4bd.on('block', function(blockHash) {
   // a new block has been added
 });
 ```
 
 For details on instantiating a bus for a node, see the [Bus Documentation](../bus.md).
-- Name: `ravend/rawtransaction`
-- Name: `ravend/hashblock`
-- Name: `ravend/addresstxid`, Arguments: [address, address...]
+- Name: `b4bd/rawtransaction`
+- Name: `b4bd/hashblock`
+- Name: `b4bd/addresstxid`, Arguments: [address, address...]
 
 **Examples:**
 
 ```js
-bus.subscribe('ravend/rawtransaction');
-bus.subscribe('ravend/hashblock');
-bus.subscribe('ravend/addresstxid', ['13FMwCYz3hUhwPcaWuD2M1U2KzfTtvLM89']);
+bus.subscribe('b4bd/rawtransaction');
+bus.subscribe('b4bd/hashblock');
+bus.subscribe('b4bd/addresstxid', ['13FMwCYz3hUhwPcaWuD2M1U2KzfTtvLM89']);
 
-bus.on('ravend/rawtransaction', function(transactionHex) {
+bus.on('b4bd/rawtransaction', function(transactionHex) {
   //...
 });
 
-bus.on('ravend/hashblock', function(blockhashHex) {
+bus.on('b4bd/hashblock', function(blockhashHex) {
   //...
 });
 
-bus.on('ravend/addresstxid', function(data) {
+bus.on('b4bd/addresstxid', function(data) {
   // data.address;
   // data.txid;
 });

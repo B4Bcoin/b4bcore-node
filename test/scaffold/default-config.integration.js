@@ -6,20 +6,20 @@ var sinon = require('sinon');
 var proxyquire = require('proxyquire');
 
 describe('#defaultConfig', function() {
-  var expectedExecPath = path.resolve(__dirname, '../../bin/ravend');
+  var expectedExecPath = path.resolve(__dirname, '../../bin/b4bd');
 
   it('will return expected configuration', function() {
     var config = JSON.stringify({
       network: 'livenet',
       port: 3001,
       services: [
-        'ravend',
+        'b4bd',
         'web'
       ],
       servicesConfig: {
-        ravend: {
+        b4bd: {
           spawn: {
-            datadir: process.env.HOME + '/.ravencore/data',
+            datadir: process.env.HOME + '/.b4bcore/data',
             exec: expectedExecPath
           }
         }
@@ -29,7 +29,7 @@ describe('#defaultConfig', function() {
       fs: {
         existsSync: sinon.stub().returns(false),
         writeFileSync: function(path, data) {
-          path.should.equal(process.env.HOME + '/.ravencore/ravencore-node.json');
+          path.should.equal(process.env.HOME + '/.b4bcore/b4bcore-node.json');
           data.should.equal(config);
         },
         readFileSync: function() {
@@ -42,29 +42,29 @@ describe('#defaultConfig', function() {
     });
     var home = process.env.HOME;
     var info = defaultConfig();
-    info.path.should.equal(home + '/.ravencore');
+    info.path.should.equal(home + '/.b4bcore');
     info.config.network.should.equal('livenet');
     info.config.port.should.equal(3001);
-    info.config.services.should.deep.equal(['ravend', 'web']);
-    var ravend = info.config.servicesConfig.ravend;
-    should.exist(ravend);
-    ravend.spawn.datadir.should.equal(home + '/.ravencore/data');
-    ravend.spawn.exec.should.equal(expectedExecPath);
+    info.config.services.should.deep.equal(['b4bd', 'web']);
+    var b4bd = info.config.servicesConfig.b4bd;
+    should.exist(b4bd);
+    b4bd.spawn.datadir.should.equal(home + '/.b4bcore/data');
+    b4bd.spawn.exec.should.equal(expectedExecPath);
   });
   it('will include additional services', function() {
     var config = JSON.stringify({
       network: 'livenet',
       port: 3001,
       services: [
-        'ravend',
+        'b4bd',
         'web',
         'insight-api',
         'insight-ui'
       ],
       servicesConfig: {
-        ravend: {
+        b4bd: {
           spawn: {
-            datadir: process.env.HOME + '/.ravencore/data',
+            datadir: process.env.HOME + '/.b4bcore/data',
             exec: expectedExecPath
           }
         }
@@ -74,7 +74,7 @@ describe('#defaultConfig', function() {
       fs: {
         existsSync: sinon.stub().returns(false),
         writeFileSync: function(path, data) {
-          path.should.equal(process.env.HOME + '/.ravencore/ravencore-node.json');
+          path.should.equal(process.env.HOME + '/.b4bcore/b4bcore-node.json');
           data.should.equal(config);
         },
         readFileSync: function() {
@@ -89,18 +89,18 @@ describe('#defaultConfig', function() {
     var info = defaultConfig({
       additionalServices: ['insight-api', 'insight-ui']
     });
-    info.path.should.equal(home + '/.ravencore');
+    info.path.should.equal(home + '/.b4bcore');
     info.config.network.should.equal('livenet');
     info.config.port.should.equal(3001);
     info.config.services.should.deep.equal([
-      'ravend',
+      'b4bd',
       'web',
       'insight-api',
       'insight-ui'
     ]);
-    var ravend = info.config.servicesConfig.ravend;
-    should.exist(ravend);
-    ravend.spawn.datadir.should.equal(home + '/.ravencore/data');
-    ravend.spawn.exec.should.equal(expectedExecPath);
+    var b4bd = info.config.servicesConfig.b4bd;
+    should.exist(b4bd);
+    b4bd.spawn.datadir.should.equal(home + '/.b4bcore/data');
+    b4bd.spawn.exec.should.equal(expectedExecPath);
   });
 });

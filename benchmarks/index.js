@@ -1,15 +1,15 @@
-Ravencore'use strict';
+B4bcore'use strict';
 
 var benchmark = require('benchmark');
-var ravencoin = require('ravencoin');
+var b4bcoin = require('b4bcoin');
 var async = require('async');
 var maxTime = 20;
 
-console.log('Ravencoin Service native interface vs. Ravencoin JSON RPC interface');
+console.log('B4bcoin Service native interface vs. B4bcoin JSON RPC interface');
 console.log('----------------------------------------------------------------------');
 
-// To run the benchmarks a fully synced Ravencoin directory is needed. The RPC comands
-// can be modified to match the settings in raven.conf.
+// To run the benchmarks a fully synced B4bcoin directory is needed. The RPC comands
+// can be modified to match the settings in b4b.conf.
 
 var fixtureData = {
   blockHashes: [
@@ -26,34 +26,34 @@ var fixtureData = {
   ]
 };
 
-var ravend = require('../').services.Ravencoin({
+var b4bd = require('../').services.B4bcoin({
   node: {
-    datadir: process.env.HOME + '/.raven',
+    datadir: process.env.HOME + '/.b4b',
     network: {
       name: 'testnet'
     }
   }
 });
 
-ravend.on('error', function(err) {
+b4bd.on('error', function(err) {
   console.error(err.message);
 });
 
-ravend.start(function(err) {
+b4bd.start(function(err) {
   if (err) {
     throw err;
   }
-  console.log('Ravencoin started');
+  console.log('B4bcoin started');
 });
 
-ravend.on('ready', function() {
+b4bd.on('ready', function() {
 
-  console.log('Ravencoin ready');
+  console.log('B4bcoin ready');
 
-  var client = new ravencoin.Client({
+  var client = new b4bcoin.Client({
     host: 'localhost',
     port: 18332,
-    user: 'raven',
+    user: 'b4b',
     pass: 'local321'
   });
 
@@ -64,12 +64,12 @@ ravend.on('ready', function() {
       var hashesLength = fixtureData.blockHashes.length;
       var txLength = fixtureData.txHashes.length;
 
-      function ravendGetBlockNative(deffered) {
+      function b4bdGetBlockNative(deffered) {
         if (c >= hashesLength) {
           c = 0;
         }
         var hash = fixtureData.blockHashes[c];
-        ravend.getBlock(hash, function(err, block) {
+        b4bd.getBlock(hash, function(err, block) {
           if (err) {
             throw err;
           }
@@ -78,7 +78,7 @@ ravend.on('ready', function() {
         c++;
       }
 
-      function ravendGetBlockJsonRpc(deffered) {
+      function b4bdGetBlockJsonRpc(deffered) {
         if (c >= hashesLength) {
           c = 0;
         }
@@ -92,12 +92,12 @@ ravend.on('ready', function() {
         c++;
       }
 
-      function ravenGetTransactionNative(deffered) {
+      function b4bGetTransactionNative(deffered) {
         if (c >= txLength) {
           c = 0;
         }
         var hash = fixtureData.txHashes[c];
-        ravend.getTransaction(hash, true, function(err, tx) {
+        b4bd.getTransaction(hash, true, function(err, tx) {
           if (err) {
             throw err;
           }
@@ -106,7 +106,7 @@ ravend.on('ready', function() {
         c++;
       }
 
-      function ravenGetTransactionJsonRpc(deffered) {
+      function b4bGetTransactionJsonRpc(deffered) {
         if (c >= txLength) {
           c = 0;
         }
@@ -122,22 +122,22 @@ ravend.on('ready', function() {
 
       var suite = new benchmark.Suite();
 
-      suite.add('ravend getblock (native)', ravendGetBlockNative, {
+      suite.add('b4bd getblock (native)', b4bdGetBlockNative, {
         defer: true,
         maxTime: maxTime
       });
 
-      suite.add('ravend getblock (json rpc)', ravendGetBlockJsonRpc, {
+      suite.add('b4bd getblock (json rpc)', b4bdGetBlockJsonRpc, {
         defer: true,
         maxTime: maxTime
       });
 
-      suite.add('ravend gettransaction (native)', ravenGetTransactionNative, {
+      suite.add('b4bd gettransaction (native)', b4bGetTransactionNative, {
         defer: true,
         maxTime: maxTime
       });
 
-      suite.add('ravend gettransaction (json rpc)', ravenGetTransactionJsonRpc, {
+      suite.add('b4bd gettransaction (json rpc)', b4bGetTransactionJsonRpc, {
         defer: true,
         maxTime: maxTime
       });
@@ -158,7 +158,7 @@ ravend.on('ready', function() {
       throw err;
     }
     console.log('Finished');
-    ravend.stop(function(err) {
+    b4bd.stop(function(err) {
       if (err) {
         console.error('Fail to stop services: ' + err);
         process.exit(1);

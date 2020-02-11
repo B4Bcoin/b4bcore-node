@@ -1,6 +1,6 @@
 # Release Process
 
-Binaries for ravend are distributed for convenience and built deterministically with Gitian, signatures for ravend are located at the [gitian.sigs](https://github.com/RavenDevKit/gitian.sigs) respository.
+Binaries for ravend are distributed for convenience and built deterministically with Gitian, signatures for ravend are located at the [gitian.sigs](https://github.com/B4Bcoin/gitian.sigs) respository.
 
 ## How to Release
 

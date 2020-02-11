@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+var b4bcore = require('../lib/cli/b4bcore');
+b4bcore();

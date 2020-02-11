@@ -1,21 +1,21 @@
 {
-  "name": "ravencore-node",
-  "description": "Full node with extended capabilities using ravencore and Ravencoin",
+  "name": "b4bcore-node",
+  "description": "Full node with extended capabilities using b4bcore and b4bcoin",
   "author": "Under",
   "version": "1.0.3",
   "main": "./index.js",
-  "repository": "git://github.com/RavenDevKit/ravencore-node.git",
-  "homepage": "https://github.com/RavenDevKit/ravencore-node",
+  "repository": "git://github.com/B4Bcoin/b4bcore-node.git",
+  "homepage": "https://github.com/B4Bcoin/b4bcore-node",
   "bugs": {
-    "url": "https://github.com/RavenDevKit/ravencore-node/issues"
+    "url": "https://github.com/B4Bcoin/b4bcore-node/issues"
   },
   "bin": {
-    "ravencore-node": "./bin/ravencore-node"
+    "b4bcore-node": "./bin/b4bcore-node"
   },
   "scripts": {
     "preinstall": "./scripts/download",
-    "download-ravend": "./scripts/download",
-    "verify-ravend": "./scripts/download --skip-ravencoin-download --verify-ravencoin-download",
+    "download-b4bd": "./scripts/download",
+    "verify-b4bd": "./scripts/download --skip-b4bcoin-download --verify-b4bcoin-download",
     "test": "mocha -R spec --recursive",
     "regtest": "./scripts/regtest",
     "jshint": "jshint --reporter=node_modules/jshint-stylish ./lib",
@@ -23,13 +23,13 @@
     "coveralls": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --recursive -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "tags": [
-    "ravencoin",
-    "ravennd"
+    "b4bcoin",
+    "b4bd"
   ],
   "dependencies": {
     "async": "2.6.2",
-    "ravend-rpc": "RavenDevKit/ravend-rpc",
-    "ravencore-lib": "RavenDevKit/ravencore-lib",
+    "@B4Bcoin/b4bcore-lib": "github:B4Bcoin/b4bcore-lib",
+    "@B4Bcoin/b4bd-rpc": "github:B4Bcoin/b4bd-rpc",
     "body-parser": "1.18.3",
     "colors": "1.3.3",
     "commander": "2.20.0",
@@ -58,7 +58,7 @@
     "jshint-stylish": "^2.1.0",
     "mocha": "^5.0.5",
     "proxyquire": "^1.3.1",
-    "ravencore-p2p": "RavenDevKit/ravencore-p2p",
+    "@B4Bcoin/b4bcore-p2p": "github:B4Bcoin/b4bcore-p2p",
     "rimraf": "^2.4.2",
     "sinon": "^4.4.8"
   },

@@ -10,22 +10,22 @@ nvm install v4
 
 ## Fork and Download Repositories
 
-To develop ravencore-node:
+To develop b4bcore-node:
 
 ```bash
 cd ~
-git clone git@github.com:<yourusername>/ravencore-node.git
-git clone git@github.com:<yourusername>/ravencore-lib.git
+git clone git@github.com:<yourusername>/b4bcore-node.git
+git clone git@github.com:<yourusername>/b4bcore-lib.git
 ```
 
-To develop ravencoin or to compile from source:
+To develop b4bcoin or to compile from source:
 
 ```bash
-git clone git@github.com:<yourusername>/ravencoin.git
+git clone git@github.com:<yourusername>/b4bcoin.git
 git fetch origin <branchname>:<branchname>
 git checkout <branchname>
 ```
-**Note**: See ravencoin documentation for building ravencoin on your platform.
+**Note**: See b4bcoin documentation for building b4bcoin on your platform.
 
 
 ## Install Development Dependencies
@@ -46,27 +46,27 @@ brew install zeromq
 ## Install and Symlink
 
 ```bash
-cd ravencore-lib
+cd b4bcore-lib
 npm install
-cd ../ravencore-node
+cd ../b4bcore-node
 npm install
 ```
-**Note**: If you get a message about not being able to download ravencoin distribution, you'll need to compile ravend from source, and setup your configuration to use that version.
+**Note**: If you get a message about not being able to download b4bcoin distribution, you'll need to compile b4bd from source, and setup your configuration to use that version.
 
 
-We now will setup symlinks in `ravencore-node` *(repeat this for any other modules you're planning on developing)*:
+We now will setup symlinks in `b4bcore-node` *(repeat this for any other modules you're planning on developing)*:
 ```bash
 cd node_modules
-rm -rf ravencore-lib
-ln -s ~/ravencore-lib
-rm -rf ravend-rpc
-ln -s ~/ravend-rpc
+rm -rf b4bcore-lib
+ln -s ~/b4bcore-lib
+rm -rf b4bd-rpc
+ln -s ~/b4bd-rpc
 ```
 
-And if you're compiling or developing ravencoin:
+And if you're compiling or developing b4bcoin:
 ```bash
 cd ../bin
-ln -sf ~/ravencoin/src/ravend
+ln -sf ~/b4bcoin/src/b4bd
 ```
 
 ## Run Tests
@@ -78,19 +78,19 @@ npm install mocha -g
 
 To run all test suites:
 ```bash
-cd ravencore-node
+cd b4bcore-node
 npm run regtest
 npm run test
 ```
 
 To run a specific unit test in watch mode:
 ```bash
-mocha -w -R spec test/services/ravend.unit.js
+mocha -w -R spec test/services/b4bd.unit.js
 ```
 
 To run a specific regtest:
 ```bash
-mocha -R spec regtest/ravend.js
+mocha -R spec regtest/b4bd.js
 ```
 
 ## Running a Development Node
@@ -102,46 +102,46 @@ cd ~
 mkdir devnode
 cd devnode
 mkdir node_modules
-touch ravencore-node.json
+touch b4bcore-node.json
 touch package.json
 ```
 
-Edit `ravencore-node.json` with something similar to:
+Edit `b4bcore-node.json` with something similar to:
 ```json
 {
   "network": "livenet",
   "port": 3001,
   "services": [
-    "ravend",
+    "b4bd",
     "web",
     "insight-api",
     "insight-ui",
     "<additional_service>"
   ],
   "servicesConfig": {
-    "ravend": {
+    "b4bd": {
       "spawn": {
-        "datadir": "/home/<youruser>/.ravend",
-        "exec": "/home/<youruser>/ravencoin/src/ravend"
+        "datadir": "/home/<youruser>/.b4bd",
+        "exec": "/home/<youruser>/b4bcoin/src/b4bd"
       }
     }
   }
 }
 ```
 
-**Note**: To install services [insight-api](https://github.com/RavenDevKit/insight-api) and [insight-ui](https://github.com/RavenDevKit/insight-ui) you'll need to clone the repositories locally.
+**Note**: To install services [insight-api](https://github.com/B4Bcoin/insight-api) and [insight-ui](https://github.com/B4Bcoin/insight-ui) you'll need to clone the repositories locally.
 
 Setup symlinks for all of the services and dependencies:
 
 ```bash
 cd node_modules
-ln -s ~/ravencore-lib
-ln -s ~/ravencore-node
+ln -s ~/b4bcore-lib
+ln -s ~/b4bcore-node
 ln -s ~/insight-api
 ln -s ~/insight-ui
 ```
 
-Make sure that the `<datadir>/raven.conf` has the necessary settings, for example:
+Make sure that the `<datadir>/b4b.conf` has the necessary settings, for example:
 ```
 server=1
 whitelist=127.0.0.1
@@ -152,11 +152,11 @@ spentindex=1
 zmqpubrawtx=tcp://127.0.0.1:28332
 zmqpubhashblock=tcp://127.0.0.1:28332
 rpcallowip=127.0.0.1
-rpcuser=ravencoin
+rpcuser=b4bcoin
 rpcpassword=local321
 ```
 
 From within the `devnode` directory with the configuration file, start the node:
 ```bash
-../ravencore-node/bin/ravencore-node start
+../b4bcore-node/bin/b4bcore-node start
 ```

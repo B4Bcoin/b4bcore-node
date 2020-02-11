@@ -1,5 +1,5 @@
 # Bus
-The bus provides a way to subscribe to events from any of the services running. It's implemented abstract from transport specific implementation. The primary use of the bus in Ravencore Node is for subscribing to events via a web socket.
+The bus provides a way to subscribe to events from any of the services running. It's implemented abstract from transport specific implementation. The primary use of the bus in B4bcore Node is for subscribing to events via a web socket.
 
 ## Opening/Closing
 
@@ -20,11 +20,11 @@ bus.close();
 ```javascript
 
 // subscribe to all transaction events
-bus.subscribe('ravend/rawtransaction');
+bus.subscribe('b4bd/rawtransaction');
 
 // to subscribe to new block hashes
-bus.subscribe('ravend/hashblock');
+bus.subscribe('b4bd/hashblock');
 
 // unsubscribe
-bus.unsubscribe('ravend/rawtransaction');
+bus.unsubscribe('b4bd/rawtransaction');
 ```

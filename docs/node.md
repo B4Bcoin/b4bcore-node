@@ -14,17 +14,17 @@ A node represents a collection of services that are loaded together. For more in
 
 ```js
 
-var index = require('ravencore-node');
-var Ravencoin = index.services.Ravencoin;
+var index = require('b4bcore-node');
+var B4bcoin = index.services.B4bcoin;
 var Node = index.Node;
 
 var configuration = {
-  datadir: '/home/user/.raven',
+  datadir: '/home/user/.b4b',
   network: 'testnet',
   services: [
     {
-      name: 'ravend',
-      module: Ravencoin,
+      name: 'b4bd',
+      module: B4bcoin,
       config: {}
     }
   ]
@@ -37,7 +37,7 @@ node.start(function() {
 });
 
 node.on('ready', function() {
-  console.log('Ravencoin Node Ready');
+  console.log('B4bcoin Node Ready');
 });
 
 node.on('error', function(err) {

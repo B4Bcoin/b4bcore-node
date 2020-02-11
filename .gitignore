@@ -22,10 +22,10 @@ coverage/*
 **/*.creator
 *.log
 .DS_Store
-bin/ravencoin*
+bin/b4bcoin*
 bin/SHA256SUMS.asc
 regtest/data/node1/regtest
 regtest/data/node2/regtest
 regtest/data/node3/regtest
-bin/ravend
-bin/raven-*
+bin/b4bd
+bin/b4b-*
