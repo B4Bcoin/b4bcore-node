@@ -69,14 +69,14 @@ download_b4bd() {
             elif [[ "${platform}" == "darwin" ]]; then
                 hdiutil mount $archive_name
                 if test $? -eq 0; then
-                    cp /Volumes/Raven\ Core/Raven-Qt.app/Contents/MacOS/b4bd .
-                    hdiutil unmount /Volumes/Raven\ Core
+                    cp /Volumes/B4B\ Core/B4b-Qt.app/Contents/MacOS/b4bd .
+                    hdiutil unmount /Volumes/B4B\ Core
                     return;
                 fi
             fi
         fi
     fi
-    echo "Ravencoin binary distribution could not be downloaded"
+    echo "B4Bcoin binary distribution could not be downloaded"
     exit -1
 }
 
@@ -102,7 +102,7 @@ verify_download() {
     fi
 }
 
-download=1
+download=0
 verify=0
 
 if [ "${SKIP_RAVENCOIN_DOWNLOAD}" = 1 ]; then
